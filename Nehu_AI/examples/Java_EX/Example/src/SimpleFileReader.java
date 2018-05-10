@@ -1,0 +1,26 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class SimpleFileReader {
+	public static void main(String[] args) {
+		try {
+			FileReader fileReader = new FileReader(args[0]);
+			BufferedReader bufferedReader = new BufferedReader(fileReader);
+			
+			String line;
+			while((line=bufferedReader.readLine())!=null) {
+				System.out.println(line);
+			}
+			bufferedReader.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+}

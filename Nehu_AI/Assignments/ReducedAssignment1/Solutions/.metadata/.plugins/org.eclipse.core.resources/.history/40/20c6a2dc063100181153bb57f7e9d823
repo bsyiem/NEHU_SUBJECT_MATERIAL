@@ -1,0 +1,38 @@
+
+public class Edge 
+{
+	String destination;
+	
+	public String getDestination() {
+		return destination;
+	}
+
+	public void setDestination(String destination) {
+		this.destination = destination;
+	}
+
+	int weight;
+	
+	public Edge(String destination, int weight) 
+	{
+		this.destination = destination;
+		this.weight = weight;
+	}
+	
+	public int getWeight() 
+	{
+		return weight;
+	}
+	
+	public void setWeight(int weight) 
+	{
+		this.weight = weight;
+	}
+
+	@Override
+	public String toString() {
+		return this.destination+"("+this.weight+")";
+	}
+	
+
+}

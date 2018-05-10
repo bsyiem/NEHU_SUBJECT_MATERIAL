@@ -1,0 +1,35 @@
+import java.util.*;
+
+public class AdjacencyListMap 
+{
+	Map<String,LinkedList<Edge>> adjacencyList;
+
+	public AdjacencyListMap() 
+	{
+		this.adjacencyList = new HashMap<>();
+	}
+	
+	public void addDirectedEdge(String vertex, String destination, int weight) 
+	{
+		if(!this.adjacencyList.containsKey(vertex)) 
+		{
+			this.adjacencyList.put(vertex, new LinkedList<Edge>());
+		}
+		
+		if(!this.adjacencyList.containsKey(destination)) 
+		{
+			this.adjacencyList.put(destination, new LinkedList<Edge>());
+		}
+		
+		this.adjacencyList.get(vertex).add(new Edge(destination,weight));
+	}
+	
+	public void addUndirectedEdge(String vertex, String destination, int weight) 
+	{
+		this.addDirectedEdge(vertex, destination, weight);
+		this.addDirectedEdge(destination, vertex, weight);
+	}
+	
+	
+
+}

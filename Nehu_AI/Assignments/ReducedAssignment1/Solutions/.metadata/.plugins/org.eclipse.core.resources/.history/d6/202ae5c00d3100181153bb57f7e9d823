@@ -1,0 +1,28 @@
+import java.util.LinkedList;
+
+public class AdjacencyListLVE 
+{
+	LinkedList<VertexEdges> adjacencyList;
+
+	public AdjacencyListLVE() 
+	{
+		this.adjacencyList = new LinkedList<>();
+	}
+	
+	public void addDirectedEdge(String vertex, String destination,int weight) 
+	{
+		
+	}
+	
+	private int findVertex(String vertex) 
+	{
+		for(VertexEdges v: this.adjacencyList) 
+		{
+			if(vertex.equals(v.getVertex())) 
+			{
+				return this.adjacencyList.indexOf(v);
+			}
+		}
+		return -1;
+	}
+}

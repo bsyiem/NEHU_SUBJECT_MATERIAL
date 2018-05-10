@@ -1,0 +1,13 @@
+import java.util.LinkedList;
+
+public class VertexEdges 
+{
+	String vertex;
+	LinkedList<Edge> edges;
+	
+	public VertexEdges(String vertex) {
+		super();
+		this.vertex = vertex;
+		this.edges = new LinkedList<Edge>();
+	}
+}

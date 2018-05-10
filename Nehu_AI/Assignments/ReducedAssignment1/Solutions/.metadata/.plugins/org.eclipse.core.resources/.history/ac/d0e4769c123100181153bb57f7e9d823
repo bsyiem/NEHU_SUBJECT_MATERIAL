@@ -1,0 +1,77 @@
+import java.util.LinkedList;
+
+public class AdjacencyListLL 
+{
+	LinkedList<LinkedList<Edge>> adjacencyList;
+
+	public AdjacencyListLL() 
+	{
+		this.adjacencyList = new LinkedList<>();
+	}
+	
+	public void addDirectedEdge(String vertex,String destination, int weight) 
+	{
+		int indexVertex = this.findVertex(vertex);
+		int indexDest = this.findVertex(destination);
+		
+		if(indexVertex == -1) 
+		{
+			LinkedList<Edge> edges = new LinkedList<>();
+			edges.add(new Edge(vertex,0));
+			this.adjacencyList.add(edges);
+			indexVertex = this.findVertex(vertex);
+		}
+		
+		if(indexDest == -1) 
+		{
+			LinkedList<Edge> edges = new LinkedList<>();
+			edges.add(new Edge(destination,0));
+			this.adjacencyList.add(edges);
+		}
+		this.adjacencyList.get(indexVertex).add(new Edge(destination, weight));
+	}
+	
+	public void addUndirectedEdge(String vertex, String destination,int weight) 
+	{
+		this.addDirectedEdge(vertex, destination, weight);
+		this.addDirectedEdge(destination, vertex, weight);
+	}
+	
+	private int findVertex(String vertex) 
+	{
+		Edge toSearch = new Edge(vertex,0);
+		for(LinkedList<Edge> edges: this.adjacencyList) 
+		{
+			if(edges.getFirst().equals(toSearch))
+			{
+				return this.adjacencyList.indexOf(edges);
+			}
+			
+//			if(edges.getFirst().getDestination().equals(vertex) && edges.getFirst().getWeight() == 0) 
+//			{
+//				return this.adjacencyList.indexOf(edges);
+//			}
+		}
+		return -1;
+	}
+	
+	@Override
+	public String toString() {
+		String value = "";
+		for(LinkedList<Edge> entry: this.adjacencyList) 
+		{
+			value+=entry.getFirst().getDestination();
+			value+=" - ";
+			for(Edge edge: entry) 
+			{
+				if(edge.getWeight()!=0) 
+				{
+					value+=edge.toString()+",";
+				}									
+			}
+			value.substring(0,(value.length()-2));
+			value+="\n";
+		}
+		return value;
+	}
+}

@@ -1,0 +1,175 @@
+package heuristicSearch;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedList;
+import entity.AdjacencyList;
+
+public class SimpleHillClimber 
+{
+	private int maxIterations;
+	
+	private final int DEFAULT_SWAP_INDEX = 1;
+	private final int MIN = 2;
+	
+	private int max;
+	
+	private LinkedList<Integer> completeRange; 
+	
+	private LinkedList<String> cities;
+	private AdjacencyList<String> cityMap;
+	
+	public String startCity;
+	
+	public SimpleHillClimber(AdjacencyList<String> cityMap, String startCity, int maxIterations) 
+	{
+		this.cityMap = cityMap;
+		this.startCity = startCity;
+		this.cities = this.cityMap.getVertices();
+		this.max = this.cities.size()-1;
+		this.maxIterations = maxIterations;
+		
+		this.completeRange = new LinkedList<>();
+		this.fillCompleteRange();
+	}
+	
+	private void fillCompleteRange() 
+	{
+		for(int i = this.MIN;i<=max;i++) 
+		{
+			this.completeRange.add(i);
+		}
+	}
+	
+	public LinkedList<String> climbHill()
+	{
+		System.out.println("climbing hill");
+		int iterationNumber = 0;
+		LinkedList<String> currentState = generateInitialTour();
+		LinkedList<String> nextState = new LinkedList<>();
+		while(iterationNumber < maxIterations) 
+		{
+			System.out.println("iteration = "+iterationNumber );
+			nextState = getNextState(currentState);
+			if(nextState == currentState) 
+			{
+				return currentState;
+			}
+			
+			currentState = nextState;
+			iterationNumber += 1;
+		}
+		
+		return currentState;
+	}
+	
+	/*
+	 * generates the next state of the travelling salesman problem
+	 * by swapping the second city with a random other city
+	 * @param -> current tour plan or current state of the problem
+	 */
+	public LinkedList<String> getNextState(LinkedList<String> tour)
+	{
+		int heuristicValueCurrentState = getHeuristicValue(tour);
+		
+		
+		HashSet<Integer> exclude = new HashSet<Integer>();
+		
+		LinkedList<String> nextState = tour;
+		LinkedList<String> possibleState;
+		
+		while(nextState == tour)// && !exclude.containsAll(this.completeRange))
+		{
+//			System.out.println("exclude = "+exclude);
+//			System.out.println("complete = "+ completeRange);
+			
+			if(exclude.containsAll(this.completeRange)) {
+				break;
+			}
+			possibleState = generatePossibleNextState(exclude, tour);
+			int heuristicValuePossibleState = getHeuristicValue(possibleState);
+			
+			System.out.println("current state = "+tour+" hVal Current = "+heuristicValueCurrentState);
+			System.out.println("possibleState = "+possibleState + " hVal = "+heuristicValuePossibleState);
+			System.out.println();
+			
+			if(heuristicValueCurrentState > heuristicValuePossibleState) {
+				nextState = possibleState;
+				exclude.clear();
+			}
+		}
+		
+		return nextState;
+	}
+	
+	/*
+	 * generates a possible next state 
+	 * @param exclude -> contains information about already swapped positions
+	 * @param currentState -> contains the current tour plan
+	 */
+	public LinkedList<String> generatePossibleNextState(HashSet<Integer> exclude, LinkedList<String> currentState)
+	{		
+		LinkedList<String> possibleState = new LinkedList<>(currentState);
+		
+		int positionToSwap;
+		do 
+		{
+			positionToSwap = generateRandomInRange(MIN, max);
+		}while(exclude.contains(positionToSwap));
+		exclude.add(positionToSwap);
+		
+		possibleState.set(this.DEFAULT_SWAP_INDEX, possibleState.get(positionToSwap));
+		possibleState.set(positionToSwap, currentState.get(this.DEFAULT_SWAP_INDEX));
+		
+		return possibleState;
+	}
+	
+	//generates and returns a random initial tour starting with startCity and ending with startCity
+	private LinkedList<String> generateInitialTour()
+	{	
+		LinkedList<String> tour = new LinkedList<>();
+		
+		LinkedList<String> intermediate = this.cities;
+		intermediate.remove(this.startCity);
+		Collections.shuffle(intermediate);
+		
+		tour.addFirst(this.startCity);
+		tour.addAll(intermediate);
+		tour.addLast(this.startCity);
+		
+		return tour;
+	}
+	
+	/*
+	 * Gets the distance for the current state
+	 * @param tour -> denotes the currents order of cities to be travelled
+	 */
+	private int getHeuristicValue(LinkedList<String> tour) 
+	{
+		int sum = 0;
+		for(int i=0;i<tour.size()-1;i++) 
+		{
+			sum += this.cityMap.getWeightBetween(tour.get(i), tour.get(i+1));
+		}
+		return sum;
+	}
+	
+	//generate a random number in the range [min,max]
+	private int generateRandomInRange(int min, int max)
+	{
+		return (int)(Math.random()*(max+1-min))+min;
+	}
+	
+	public void printStateAndHeuristic(LinkedList<String> state) 
+	{
+		int hVal = getHeuristicValue(state);
+		state.stream()
+			.forEach(s -> 
+				{
+					System.out.print(s);
+				}
+			);
+
+		System.out.println(" -> "+hVal);
+	}
+}
