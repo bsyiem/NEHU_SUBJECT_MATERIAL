@@ -1,14 +1,19 @@
 #include<stdio.h>
 
+/*
+helper function to print 1-dimentional array
+*/
 void array_printer(int *a,int size);
 
 /*
+bubble_sort():
 bubbles up the largest value to the last position in the first iteration;
 bubbles up the second largest value to the second last position in the second iteration and so on
 */
 void bubble_sort(int *a,int size);
 
 /*
+selection_sort():
 i=0;
 selects the minimum element and inserts it into position i
 i++;
@@ -16,10 +21,21 @@ i++;
 void selection_sort(int *a, int size);
 
 /*
-inserts the considered element into its correct position;
-moves up all values larger than the considered element and then inserts the considered element into correct position
+insertion_sort():
+inserts the considered element(key) into its correct position (very similar to inserting a value into a specific position in the array);
+moves up all values larger than the key by 1 space and then inserts the key into correct position
 */
 void insertion_sort(int *a,int size);
+
+/*
+merge_sort(): 
+merge_sort() - used to split the array into two subarrays and then sort it by merging
+merge() - used to correctly merge arrays and form a sorted array
+find_middle() - used to find the middle index of the array
+*/
+void merge(int *a, int low,int middle, int high);
+void merge_sort(int *a, int low, int high);
+int find_middle(int *a, int low, int high);
 
 void main()
 {
@@ -43,6 +59,12 @@ void main()
         printf("after insertion sort\n");
         insertion_sort(arra,5);
         array_printer(arra,5);	
+
+	int array[] = {20,10,30,40,5};
+
+	printf("after merge_sort\n");
+	merge_sort(array,0,4);
+	array_printer(array,5);
 }
 
 void array_printer(int *a,int size)
@@ -102,4 +124,98 @@ void insertion_sort(int *a,int size)
 		}
 		a[j] = key;
 	}
+}
+
+int find_middle(int *a,int low,int high)
+{
+	return ((high-low)/2)+low;	
+}
+
+void merge_sort(int *a,int low, int high)
+{
+	if(low!=high)
+	{
+		int middle = find_middle(a,low,high);
+	
+		//DFS traversal 
+
+		//creates the first subarray
+		merge_sort(a,low,middle);
+
+		//creates the second subarray
+		merge_sort(a,middle+1,high);
+		
+		//each subarray is sorted
+		//merges the above subarrays in a sorted order
+		merge(a,low,middle,high);
+	}
+}
+
+void merge(int *a,int low, int middle, int high)
+{
+	int leftarray_size = (middle-low)+1;
+	int rightarray_size = high - middle;
+
+	int leftarray[leftarray_size];
+	int rightarray[rightarray_size];
+	
+	int i=0,j,k;
+
+	/*
+	creates two temporary arrays of the subarrays;Left and Right
+	*/
+	while(i<leftarray_size)
+	{
+		leftarray[i] = a[low+i];
+		i++;
+	}
+
+	i=0;
+	while(i<rightarray_size)
+        {
+                rightarray[i] = a[middle+1+i];
+		i++;
+        }
+
+	i=0;
+	j=0;
+	k=low;
+	/*
+	Stores the values of subarrays into the original array by checking
+	if left[i] <= right[j]
+	for example:
+		left = {2,5,7} right = {3,4,6}
+		left[0]<right[0] -> 2
+		left[1]>right[0] -> 3
+		left[1]>right[1] -> 4
+		left[1]<right[2] -> 5
+		left[2]>right[2] -> 6
+		and remaining    -> 7
+	*/
+	while(i<leftarray_size && j<rightarray_size)
+	{
+		if(leftarray[i]<=rightarray[j])
+		{
+			a[k] = leftarray[i];
+			i++;
+		}
+		else
+		{
+			a[k] = rightarray[j];
+			j++;
+		}
+		k++;
+	}
+	while(i<leftarray_size)
+	{
+		a[k] = leftarray[i];
+		i++;
+		k++;
+	}
+	while(j<rightarray_size)
+        {
+                a[k] = rightarray[j];
+                j++;
+                k++;
+        }
 }
