@@ -7,21 +7,27 @@ void array_printer(int *a,int size);
 
 /*
 bubble_sort():
+
 bubbles up the largest value to the last position in the first iteration;
+
 bubbles up the second largest value to the second last position in the second iteration and so on
 */
 void bubble_sort(int *a,int size);
 
 /*
 selection_sort():
+
 i=0;
+
 selects the minimum element and inserts it into position i
+
 i++;
 */
 void selection_sort(int *a, int size);
 
 /*
 insertion_sort():
+
 inserts the considered element(key) into its correct position (very similar to inserting a value into a specific position in the array);
 moves up all values larger than the key by 1 space and then inserts the key into correct position
 */
@@ -29,13 +35,34 @@ void insertion_sort(int *a,int size);
 
 /*
 merge_sort(): 
+
 merge_sort() - used to split the array into two subarrays and then sort it by merging
+
 merge() - used to correctly merge arrays and form a sorted array
+
 find_middle() - used to find the middle index of the array
 */
 void merge(int *a, int low,int middle, int high);
 void merge_sort(int *a, int low, int high);
 int find_middle(int *a, int low, int high);
+
+/*
+quick_sort():
+
+partition() - used to partition the array around a pivot element. This indicates that the pivot will be correctly positioned.
+	Each element is compared with the pivot and all elements less than the pivot are placed to the left of the pivot while all elements larger than the pivot are placed after the pivot. 
+	two subarrays are created in the process;Left and Right
+	Left := array of elements less than or equal to pivot.
+	Right := array of elements greater than pivot.
+
+quick_sort(array,low,high) - the main recursive function.
+	First calls the partition() helper function to find the pivot location.
+	calls quicksort on array with low = low and high = pivot - 1
+	calls quicksort on array with low = pivot + 1 and high = high
+*/
+
+void quick_sort(int *a,int low, int high);
+int partition(int *a,int low, int high);
 
 void main()
 {
@@ -65,6 +92,12 @@ void main()
 	printf("after merge_sort\n");
 	merge_sort(array,0,4);
 	array_printer(array,5);
+
+	int array1[] = {20,10,30,40,5};
+	
+	printf("after quick_sort\n");
+        quick_sort(array1,0,4);
+        array_printer(array1,5);
 }
 
 void array_printer(int *a,int size)
@@ -133,7 +166,7 @@ int find_middle(int *a,int low,int high)
 
 void merge_sort(int *a,int low, int high)
 {
-	if(low!=high)
+	if(low<high)
 	{
 		int middle = find_middle(a,low,high);
 	
@@ -218,4 +251,45 @@ void merge(int *a,int low, int middle, int high)
                 j++;
                 k++;
         }
+}
+
+void quick_sort(int *a,int low, int high)
+{
+	if(low<high)
+	{
+		int pivot_position = partition(a,low,high);
+		
+		quick_sort(a,low,pivot_position - 1);
+		quick_sort(a,pivot_position + 1, high);
+	}
+}
+
+int partition(int *a,int low, int high)
+{
+	int temp, pivot = a[high];
+
+	//position of last found element to be less than or equal to pivot 
+	int i = -1; //-1 indicates no element found (<= pivot)
+
+	int j;
+	//move all elements <= pivot to one side
+	for(j=0; j < high;j++)
+	{
+		if(a[j]<=pivot)
+		{
+			i++;
+			temp = a[i];
+			a[i] = a[j];
+			a[j] = temp;
+			 	
+		}
+	}
+	
+	//move pivot to correct position
+	i++;
+	temp = a[high];
+	a[high] = a[i];
+	a[i] = temp;
+
+	return(i);
 }
