@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<stdlib.h>
 
 /*
 helper function to print 1-dimentional array
@@ -66,6 +67,27 @@ int partition(int *a,int low, int high);
 
 void main()
 {
+
+/*
+	int array[1000];
+	for(int i = 0; i < 1000; i++)
+	{
+		array[i] = rand()%100;
+	}
+	
+	printf("before sorting\n");
+	array_printer(array,1000);
+
+//	bubble_sort(array,1000);
+//      selection_sort(array,1000);
+//	insertion_sort(array,1000);
+//	merge_sort(array,0,999);
+	quick_sort(array,0,999);
+
+	printf("after sorting\n");
+	array_printer(array,1000);
+*/
+
         int ar[5] = {20,10,30,40,5};
 
 	printf("before sorting\n");
