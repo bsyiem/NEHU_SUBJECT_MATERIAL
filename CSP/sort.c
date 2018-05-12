@@ -37,9 +37,21 @@ void insertion_sort(int *a,int size);
 /*
 merge_sort(): 
 
-merge_sort() - used to split the array into two subarrays and then sort it by merging
+merge_sort() - uses a postorder DFS method to recursively divide the array into two subarrays at the middle index.
 
-merge() - used to correctly merge arrays and form a sorted array
+merge() - when the array cannot be divided anymore, the two subarrays are then merged in the following way:
+	let the subarrays be left[] and right[]
+        then the merged array will select elemets in the following order given:
+                left = {2,5,7,8} right = {3,4,6}:
+
+                left[0]<right[0] -> 2
+                left[1]>right[0] -> 3
+                left[1]>right[1] -> 4
+                left[1]<right[2] -> 5
+                left[2]>right[2] -> 6
+                and remaining    -> 7,8
+
+		merged_array = {2,3,4,5,6,7,8}
 
 find_middle() - used to find the middle index of the array
 */
@@ -56,7 +68,7 @@ partition() - used to partition the array around a pivot element. This indicates
 	Left := array of elements less than or equal to pivot.
 	Right := array of elements greater than pivot.
 
-quick_sort(array,low,high) - the main recursive function.
+quick_sort(array,low,high) - the main recursive function (Preorder DFS).
 	First calls the partition() helper function to find the pivot location.
 	calls quicksort on array with low = low and high = pivot - 1
 	calls quicksort on array with low = pivot + 1 and high = high
