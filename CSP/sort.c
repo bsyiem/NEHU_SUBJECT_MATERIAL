@@ -12,6 +12,13 @@ bubble_sort():
 bubbles up the largest value to the last position in the first iteration;
 
 bubbles up the second largest value to the second last position in the second iteration and so on
+
+Example:
+
+2 3 1 5 4 - considers n elements
+2 1 3 4 5 - considers n-1 elements
+1 2 3 4 5 - considers n-2 elements
+1 2 3 4 5 - considers n-3 elements
 */
 void bubble_sort(int *a,int size);
 
@@ -146,7 +153,7 @@ void array_printer(int *a,int size)
 void bubble_sort(int *a, int size)
 {
         int i,j,temp;
-        for(i=0;i<size;i++)
+        for(i=0;i<size-1;i++)
         {
                 for(j=0;j<size-1-i;j++)
                 {
