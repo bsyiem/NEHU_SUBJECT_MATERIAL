@@ -3,3 +3,5 @@ AI/Attendance
 AI/Exam
 Docs/
 ./gitignore
+*.hprof
+*.project
