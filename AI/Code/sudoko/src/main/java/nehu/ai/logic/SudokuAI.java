@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.google.common.graph.ElementOrder.Type;
+
 import nehu.ai.entity.Board;
 import nehu.ai.entity.MatrixIndex;
 import nehu.ai.entity.ValidBoard;
