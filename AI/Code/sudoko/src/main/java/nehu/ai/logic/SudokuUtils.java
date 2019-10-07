@@ -19,7 +19,7 @@ public class SudokuUtils
 	 */
 	public static boolean isFilled(Board board,int row,int col) 
 	{
-		return board.getCellValue(row,col) == 0?true:false;
+		return board.getCellValue(row,col) == 0?false:true;
 	}
 	
 	
