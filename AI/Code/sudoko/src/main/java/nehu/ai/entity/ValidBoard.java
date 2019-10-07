@@ -156,7 +156,7 @@ public class ValidBoard
 		{
 			for(int col = 0; col < SudokuUtils.COLUMN_SIZE; col++)
 			{
-				if(SudokuUtils.isFilled(board, row, col))
+				if(!SudokuUtils.isFilled(board, row, col))
 				{
 					this.validBoard.add(new ValidCell(new MatrixIndex(row, col), new ValidSet(getValidSet(row, col, board))));
 				}
